@@ -46,7 +46,7 @@ struct CameraInfo {
      * right of the screen, the value should be 270.
      */
     int orientation;
-#ifdef QCOM_HARDWARE
+#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
     int mode;
 #endif
 };

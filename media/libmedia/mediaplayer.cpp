@@ -512,6 +512,22 @@ status_t MediaPlayer::setAudioStreamType(audio_stream_type_t type)
     return OK;
 }
 
+status_t MediaPlayer::setAudioStreamType(int type)
+{
+    ALOGV("MediaPlayer::setAudioStreamType");
+    Mutex::Autolock _l(mLock);
+    if (mStreamType == (audio_stream_type_t)type) return NO_ERROR;
+    if (mCurrentState & ( MEDIA_PLAYER_PREPARED | MEDIA_PLAYER_STARTED |
+                MEDIA_PLAYER_PAUSED | MEDIA_PLAYER_PLAYBACK_COMPLETE ) ) {
+        // Can't change the stream type after prepare
+        ALOGE("setAudioStream called in state %d", mCurrentState);
+        return INVALID_OPERATION;
+    }
+    // cache
+    mStreamType = (audio_stream_type_t)type;
+    return OK;
+}
+
 status_t MediaPlayer::setLooping(int loop)
 {
     ALOGV("MediaPlayer::setLooping");
